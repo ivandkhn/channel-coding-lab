@@ -12,9 +12,10 @@ public class DataCoder {
     List<String> binaryData = new LinkedList<>();
 
     //HashMaps for building a Huffman table
-    Map<Character, String> codingTable = new HashMap<>();
-    Map<Character, Integer> frequencies = new HashMap<>();
+    Map<String, String> codingTable = new HashMap<>();
+    Map<String, Integer> frequencies = new HashMap<>();
     HuffmanTree huffmanTree;
+    int wordLength = 1;
 
     public void transmitTextString(String s) {
         dataStringToTransmit = s;
@@ -24,13 +25,16 @@ public class DataCoder {
         computeFrequencies();
         buildHuffmanTree();
         buildCodingTable();
-        for (Character buf: dataStringToTransmit.toCharArray()) {
+        printCodes(huffmanTree.root, new StringBuilder());
+        for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
+            String buf = dataStringToTransmit.substring(wordLength*i, wordLength*i+wordLength);
             binaryData.add(codingTable.get(buf));
         }
     }
 
     private void buildCodingTable() {
-        for (Character buf: dataStringToTransmit.toCharArray()) {
+        for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
+            String buf = dataStringToTransmit.substring(wordLength*i, wordLength*i+wordLength);
             codingTable.put(buf, huffmanTree.getCode(buf));
         }
     }
@@ -40,7 +44,7 @@ public class DataCoder {
 
         for (Object o : frequencies.entrySet()) {
             Map.Entry hashMapPair = (Map.Entry) o;
-            Character key = (Character) hashMapPair.getKey();
+            String key = (String) hashMapPair.getKey();
             Integer value = (Integer) hashMapPair.getValue();
             trees.offer(new HuffmanTree(new HuffmanTree.Node(key, value)));
         }
@@ -65,9 +69,8 @@ public class DataCoder {
     }
 
     private void computeFrequencies() {
-        char buf;
-        for (int i = 0; i < dataStringToTransmit.length(); i++) {
-            buf = dataStringToTransmit.charAt(i);
+        for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
+            String buf = dataStringToTransmit.substring(wordLength*i, wordLength*i+wordLength);
             if (frequencies.containsKey(buf)) {
                 frequencies.replace(buf, frequencies.get(buf) + 1);
             } else {
@@ -114,14 +117,14 @@ class HuffmanTree implements Comparable<HuffmanTree> {
         this.root = root;
     }
 
-    public String getCode(Character ch) {
-        goDeeper(root, ch, "");
+    public String getCode(String s) {
+        goDeeper(root, s, "");
         return finalStr;
     }
 
     String finalStr = "";
 
-    public Boolean goDeeper(Node node, Character ch, String str) {
+    public Boolean goDeeper(Node node, String ch, String str) {
         Node left = node.leftChild;
         Node right = node.rightChild;
 
@@ -129,7 +132,7 @@ class HuffmanTree implements Comparable<HuffmanTree> {
             return false;
         }
 
-        if (left.character == ch) {
+        if (left.character != null && left.character.equals(ch)) {
             finalStr = str + "0";
             return true;
         }
@@ -138,7 +141,7 @@ class HuffmanTree implements Comparable<HuffmanTree> {
             return false;
         }
 
-        if (right.character == ch) {
+        if (right.character != null && right.character.equals(ch)) {
             finalStr = str + "1";
             return true;
         }
@@ -155,11 +158,11 @@ class HuffmanTree implements Comparable<HuffmanTree> {
 
     public static class Node {
         public Integer frequency;
-        public Character character;
+        public String character;
         public Node leftChild;
         public Node rightChild;
 
-        public Node(Character character, Integer frequency) {
+        public Node(String character, Integer frequency) {
             this.frequency = frequency;
             this.character = character;
         }

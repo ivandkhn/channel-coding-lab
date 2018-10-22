@@ -49,16 +49,15 @@ public class DataTransmissionLine {
         decoder.out();
     }
 
-    public void transmitDecodingTable(Map<Character, String> codingTable) {
+    public void transmitDecodingTable(Map<String, String> codingTable) {
         decoder.receiveDecodingTable(codingTable);
     }
 
     public void finishTransmission() {
         System.out.println("--- Transmission line Statistics ---");
-        System.out.println("Total symbols transmitted: " + totalSymbolsTransmitted);
-        System.out.println("Total binary symbols transmitted: " + totalSymbolsLength);
-        System.out.println("That is: " + totalOnesTransmitted +
-                " \"1\" и " + totalZeroesTransmitted + " \"0\"");
+        System.out.printf("Total symbols transmitted: %d%n", totalSymbolsTransmitted);
+        System.out.printf("Total binary symbols transmitted: %d%n", totalSymbolsLength);
+        System.out.printf("That is: %d \"1\" и %d \"0\"%n", totalOnesTransmitted, totalZeroesTransmitted);
         System.out.println("Average binary symbols for one letter: " +
                 new BigDecimal(1.0 * totalSymbolsLength / totalSymbolsTransmitted).setScale(2, BigDecimal.ROUND_HALF_UP));
         System.out.println("------------------------------------");

@@ -7,7 +7,7 @@ public class DataDecoder {
 
     String receivedData = "";
     List<String> binaryData;
-    Map<String, Character> decodingTable = new HashMap<>();
+    Map<String, String> decodingTable = new HashMap<>();
     DataReceiver receiver;
 
     public DataDecoder() {
@@ -18,13 +18,13 @@ public class DataDecoder {
         binaryData.add(symbol);
     }
 
-    public void receiveDecodingTable(Map<Character, String> m) {
+    public void receiveDecodingTable(Map<String, String> m) {
         decodingTable = reverse(m);
     }
 
-    public static Map<String, Character> reverse(Map<Character, String> map) {
-        HashMap<String, Character> rev = new HashMap<>();
-        for(Map.Entry<Character, String> entry : map.entrySet())
+    public static Map<String, String> reverse(Map<String, String> map) {
+        HashMap<String, String> rev = new HashMap<>();
+        for(Map.Entry<String, String> entry : map.entrySet())
             rev.put(entry.getValue(), entry.getKey());
         return rev;
     }
