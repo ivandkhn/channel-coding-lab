@@ -15,10 +15,6 @@ public class DataSource {
             e.printStackTrace();
         }
         String s = source.textSource;
-        final int maxLen = 150;
-        System.out.println("INPUT: " + s.substring(
-                0, s.length() < maxLen? s.length() : maxLen) + "..."
-        );
         source.startTransition();
     }
 

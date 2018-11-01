@@ -1,9 +1,14 @@
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Random;
 
 public class DataTransmissionLine {
     private String currentSymbol;
     DataDecoder decoder;
+
+    double ERROR_PROBABILITY = 0.05;
+    Random random;
+    String modifiedSymbol = "";
 
     //statistics
     long totalSymbolsTransmitted = 0;
@@ -13,11 +18,26 @@ public class DataTransmissionLine {
 
     public DataTransmissionLine() {
         decoder = new DataDecoder();
+        random = new Random();
     }
 
     public void getSymbol(String s) {
         currentSymbol = s;
-        //TODO add noise to the transmission channel
+        modifiedSymbol = "";
+        char buf;
+
+        for (int i = 0; i < s.length(); i++) {
+            buf = s.charAt(i);
+            if (random.nextDouble() < ERROR_PROBABILITY) {
+                buf = switchSymbol(buf);
+            }
+            modifiedSymbol += buf;
+        }
+        currentSymbol = modifiedSymbol;
+    }
+
+    private char switchSymbol(char buf) {
+        return buf == '1'? '0' : '1';
     }
 
     public void transmitSymbol() {

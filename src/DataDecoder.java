@@ -28,9 +28,12 @@ public class DataDecoder {
 
     public void decode() {
         String buf;
-        for (int i = 0; i < binaryData.size(); i++) {
-            buf = binaryData.get(i);
-            receivedData += decodingTable.get(buf);
+        for (String aBinaryData : binaryData) {
+            if (decodingTable.containsKey(aBinaryData)) {
+                receivedData += decodingTable.get(aBinaryData);
+            } else {
+                receivedData += '?';
+            }
         }
 
         receiver = new DataReceiver(receivedData);
