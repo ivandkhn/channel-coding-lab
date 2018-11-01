@@ -1,8 +1,5 @@
 import java.util.*;
 
-/**
- * Created by Dahrah on 22.09.18.
- */
 public class DataCoder {
 
     //original data before being splitted, encoded and transmitted
@@ -27,14 +24,18 @@ public class DataCoder {
         buildCodingTable();
         printCodes(huffmanTree.root, new StringBuilder());
         for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
-            String buf = dataStringToTransmit.substring(wordLength*i, wordLength*i+wordLength);
+            String buf = dataStringToTransmit.substring(
+                    wordLength*i, wordLength*i+wordLength
+            );
             binaryData.add(codingTable.get(buf));
         }
     }
 
     private void buildCodingTable() {
         for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
-            String buf = dataStringToTransmit.substring(wordLength*i, wordLength*i+wordLength);
+            String buf = dataStringToTransmit.substring(
+                    wordLength*i, wordLength*i+wordLength
+            );
             codingTable.put(buf, huffmanTree.getCode(buf));
         }
     }
@@ -59,7 +60,9 @@ public class DataCoder {
 
     private void printCodes(HuffmanTree.Node current, StringBuilder code) {
         if (current.character != null) {
-            System.out.println(current.character + "\t " + current.frequency + "\t\t " + code);
+            System.out.println(
+                    current.character + "\t " + current.frequency + "\t " + code)
+            ;
         } else {
             printCodes(current.leftChild, code.append('0'));
             code.deleteCharAt(code.length() - 1);
@@ -70,7 +73,9 @@ public class DataCoder {
 
     private void computeFrequencies() {
         for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
-            String buf = dataStringToTransmit.substring(wordLength*i, wordLength*i+wordLength);
+            String buf = dataStringToTransmit.substring(
+                    wordLength*i, wordLength*i+wordLength
+            );
             if (frequencies.containsKey(buf)) {
                 frequencies.replace(buf, frequencies.get(buf) + 1);
             } else {
@@ -96,7 +101,9 @@ public class DataCoder {
     A simple utility class designed for sorting a HashMap by its keys.
  */
 class MapUtil {
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    public static <
+            K, V extends Comparable<? super V>
+            > Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
         //the most frequent symbol will be the first (i.e. reversed order)
         list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));

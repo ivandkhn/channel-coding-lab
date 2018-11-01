@@ -1,9 +1,6 @@
 import java.math.BigDecimal;
 import java.util.Map;
 
-/**
- * Created by Dahrah on 22.09.18.
- */
 public class DataTransmissionLine {
     private String currentSymbol;
     DataDecoder decoder;
@@ -39,7 +36,9 @@ public class DataTransmissionLine {
             } else if (buf == '1') {
                 totalOnesTransmitted++;
             } else {
-                System.out.println("NB!: A non-binary symbol was received :" + buf);
+                System.out.println(
+                        "NB!: A non-binary symbol was received :" + buf
+                );
             }
 
         }
@@ -55,11 +54,23 @@ public class DataTransmissionLine {
 
     public void finishTransmission() {
         System.out.println("--- Transmission line Statistics ---");
-        System.out.printf("Total symbols transmitted: %d%n", totalSymbolsTransmitted);
-        System.out.printf("Total binary symbols transmitted: %d%n", totalSymbolsLength);
-        System.out.printf("That is: %d \"1\" и %d \"0\"%n", totalOnesTransmitted, totalZeroesTransmitted);
-        System.out.println("Average binary symbols for one letter: " +
-                new BigDecimal(1.0 * totalSymbolsLength / totalSymbolsTransmitted).setScale(2, BigDecimal.ROUND_HALF_UP));
+
+        System.out.printf(
+                "Total symbols transmitted: %d%n", totalSymbolsTransmitted
+        );
+        System.out.printf(
+                "Total binary symbols transmitted: %d%n", totalSymbolsLength
+        );
+        System.out.printf(
+                "That is: %d \"1\" и %d \"0\"%n",
+                totalOnesTransmitted, totalZeroesTransmitted
+        );
+        System.out.println(
+                "Average binary symbols for one letter: " +
+                new BigDecimal(1.0 * totalSymbolsLength /
+                        totalSymbolsTransmitted)
+                        .setScale(2, BigDecimal.ROUND_HALF_UP));
+
         System.out.println("------------------------------------");
         decoder.decode();
     }

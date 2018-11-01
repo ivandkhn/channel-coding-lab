@@ -1,8 +1,5 @@
 import java.util.*;
 
-/**
- * Created by Dahrah on 22.09.18.
- */
 public class DataDecoder {
 
     String receivedData = "";
