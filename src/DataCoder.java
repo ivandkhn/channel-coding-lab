@@ -12,7 +12,10 @@ public class DataCoder {
     Map<String, String> codingTable = new HashMap<>();
     Map<String, Integer> frequencies = new HashMap<>();
     HuffmanTree huffmanTree;
-    int wordLength = 1;
+
+    //tricks for tasks 2-3
+    public static final int WORD_LENGTH = 2;
+    public static final boolean EQUAL_PROBABILITY = false;
 
     public void transmitTextString(String s) {
         dataStringToTransmit = s;
@@ -22,19 +25,19 @@ public class DataCoder {
         computeFrequencies();
         buildHuffmanTree();
         buildCodingTable();
-        printCodes(huffmanTree.root, new StringBuilder());
-        for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
+//        printCodes(huffmanTree.root, new StringBuilder());
+        for (int i = 0; i < dataStringToTransmit.length() / WORD_LENGTH; i++) {
             String buf = dataStringToTransmit.substring(
-                    wordLength*i, wordLength*i+wordLength
+                    WORD_LENGTH *i, WORD_LENGTH *i+ WORD_LENGTH
             );
             binaryData.add(codingTable.get(buf));
         }
     }
 
     private void buildCodingTable() {
-        for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
+        for (int i = 0; i < dataStringToTransmit.length() / WORD_LENGTH; i++) {
             String buf = dataStringToTransmit.substring(
-                    wordLength*i, wordLength*i+wordLength
+                    WORD_LENGTH *i, WORD_LENGTH *i+ WORD_LENGTH
             );
             codingTable.put(buf, huffmanTree.getCode(buf));
         }
@@ -72,18 +75,33 @@ public class DataCoder {
     }
 
     private void computeFrequencies() {
-        for (int i = 0; i < dataStringToTransmit.length() / wordLength; i++) {
-            String buf = dataStringToTransmit.substring(
-                    wordLength*i, wordLength*i+wordLength
-            );
-            if (frequencies.containsKey(buf)) {
-                frequencies.replace(buf, frequencies.get(buf) + 1);
-            } else {
-                frequencies.put(buf, 1);
+        if (!EQUAL_PROBABILITY) {
+            for (int i = 0; i < dataStringToTransmit.length() / WORD_LENGTH; i++) {
+                String buf = dataStringToTransmit.substring(
+                        WORD_LENGTH * i, WORD_LENGTH * i + WORD_LENGTH
+                );
+                if (frequencies.containsKey(buf)) {
+                    frequencies.replace(buf, frequencies.get(buf) + 1);
+                } else {
+                    frequencies.put(buf, 1);
+                }
+            }
+            frequencies = MapUtil.sortByValue(frequencies);
+            System.out.println("FREQS TABLE: " + frequencies);
+        } else {
+            for (int i = 0; i < dataStringToTransmit.length() / WORD_LENGTH; i++) {
+                String buf = dataStringToTransmit.substring(
+                        WORD_LENGTH * i, WORD_LENGTH * i + WORD_LENGTH
+                );
+                if (!frequencies.containsKey(buf)) {
+                    // assume that Pi(xi) = K * pi and let Kcorre = p/sum(Pi),
+                    // thus getting Pi(x1) = 1.
+                    // That does not affect further calculations,
+                    // as these Pi are only compared to each other
+                    frequencies.put(buf, 1);
+                }
             }
         }
-        frequencies = MapUtil.sortByValue(frequencies);
-        System.out.println("FREQS TABLE: " + frequencies);
     }
 
     public void transmitBinaryData() {

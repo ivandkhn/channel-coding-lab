@@ -1,3 +1,5 @@
+import com.sun.deploy.util.StringUtils;
+
 import java.util.*;
 
 public class DataDecoder {
@@ -32,7 +34,9 @@ public class DataDecoder {
             if (decodingTable.containsKey(aBinaryData)) {
                 receivedData += decodingTable.get(aBinaryData);
             } else {
-                receivedData += '?';
+                receivedData += String.join(
+                        "", Collections.nCopies(DataCoder.WORD_LENGTH, "?")
+                );
             }
         }
 

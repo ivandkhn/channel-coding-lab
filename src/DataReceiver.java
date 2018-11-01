@@ -10,6 +10,8 @@ public class DataReceiver {
     int mistakenSymbolsAmount = 0;
     int correctSymbolsAmount = 0;
 
+    int WORD_LENGTH = DataCoder.WORD_LENGTH;
+
     public DataReceiver(String s) {
         receivedString = s;
 
@@ -46,10 +48,9 @@ public class DataReceiver {
         }
         System.out.println(analyseString);
         System.out.println("OUT:" + receivedString);
-        System.out.printf("Correct: %d%n", correctSymbolsAmount);
-        System.out.printf("Mistakes: %d%n", mistakenSymbolsAmount);
-        System.out.printf("Unknown: %d%n", unknownSymbolsAmount);
-        System.out.printf("Total: %d%n", correctSymbolsAmount +
-                mistakenSymbolsAmount + unknownSymbolsAmount);
+        System.out.printf("Correct: %d%n", correctSymbolsAmount / WORD_LENGTH);
+        System.out.printf("Mistakes: %d%n", mistakenSymbolsAmount / WORD_LENGTH);
+        System.out.printf("Unknown: %d%n", unknownSymbolsAmount / WORD_LENGTH);
+        System.out.printf("Equal probability: %b", DataCoder.EQUAL_PROBABILITY);
     }
 }
