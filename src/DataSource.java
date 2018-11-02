@@ -14,7 +14,6 @@ public class DataSource {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String s = source.textSource;
         source.startTransition();
     }
 

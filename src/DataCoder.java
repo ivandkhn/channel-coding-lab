@@ -2,6 +2,8 @@ import java.util.*;
 
 public class DataCoder {
 
+    public static final boolean PRINT_CODES = false;
+
     //original data before being splitted, encoded and transmitted
     String dataStringToTransmit;
 
@@ -13,8 +15,8 @@ public class DataCoder {
     Map<String, Integer> frequencies = new HashMap<>();
     HuffmanTree huffmanTree;
 
-    //tricks for tasks 2-3
-    public static final int WORD_LENGTH = 2;
+    //tasks 2-3
+    public static final int WORD_LENGTH = 1;
     public static final boolean EQUAL_PROBABILITY = false;
 
     public void transmitTextString(String s) {
@@ -25,7 +27,9 @@ public class DataCoder {
         computeFrequencies();
         buildHuffmanTree();
         buildCodingTable();
-//        printCodes(huffmanTree.root, new StringBuilder());
+        if (PRINT_CODES) {
+            printCodes(huffmanTree.root, new StringBuilder());
+        }
         for (int i = 0; i < dataStringToTransmit.length() / WORD_LENGTH; i++) {
             String buf = dataStringToTransmit.substring(
                     WORD_LENGTH *i, WORD_LENGTH *i+ WORD_LENGTH
@@ -89,12 +93,13 @@ public class DataCoder {
             frequencies = MapUtil.sortByValue(frequencies);
             System.out.println("FREQS TABLE: " + frequencies);
         } else {
+            String buf;
             for (int i = 0; i < dataStringToTransmit.length() / WORD_LENGTH; i++) {
-                String buf = dataStringToTransmit.substring(
+                buf = dataStringToTransmit.substring(
                         WORD_LENGTH * i, WORD_LENGTH * i + WORD_LENGTH
                 );
                 if (!frequencies.containsKey(buf)) {
-                    // assume that Pi(xi) = K * pi and let Kcorre = p/sum(Pi),
+                    // assume that Pi(xi) = K * pi and let Ki = p/sum(Pi),
                     // thus getting Pi(x1) = 1.
                     // That does not affect further calculations,
                     // as these Pi are only compared to each other
