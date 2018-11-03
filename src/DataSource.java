@@ -19,8 +19,14 @@ public class DataSource {
 
     private void startTransition() {
         DataCoder coder = new DataCoder();
+        long startTime = System.currentTimeMillis();
+
         coder.transmitTextString(textSource);
         coder.codeString();
         coder.transmitBinaryData();
+
+        long endTime = System.currentTimeMillis();
+        long timeDiff = endTime - startTime;
+        System.out.println("\nTIME (millis): " + timeDiff);
     }
 }
