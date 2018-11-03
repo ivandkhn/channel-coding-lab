@@ -31,7 +31,7 @@ public class DataReceiver {
         //for being just in the correct horizontal position
         analyseString.append("    ");
 
-        for (int i = 0; i < originalString.length(); i++) {
+        for (int i = 0; i < receivedString.length(); i++) {
             char buf1 = originalString.charAt(i);
             char buf2 = receivedString.charAt(i);
 

@@ -16,7 +16,7 @@ public class DataCoder {
     HuffmanTree huffmanTree;
 
     //tasks 2-3
-    public static final int WORD_LENGTH = 1;
+    public static final int WORD_LENGTH = 2;
     public static final boolean EQUAL_PROBABILITY = false;
 
     public void transmitTextString(String s) {

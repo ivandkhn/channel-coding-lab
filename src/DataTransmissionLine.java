@@ -46,7 +46,7 @@ public class DataTransmissionLine {
     }
 
     private void countStatistics(String s) {
-        totalSymbolsTransmitted++;
+        totalSymbolsTransmitted += DataCoder.WORD_LENGTH;
         totalSymbolsLength += s.length();
         char buf;
         for (int i = 0; i < s.length(); i++) {
