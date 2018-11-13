@@ -34,6 +34,7 @@ public class DataTransmissionLine {
             modifiedSymbol += buf;
         }
         currentSymbol = modifiedSymbol;
+        currentSymbol = NoiseResistantCoder.codeSymbol(currentSymbol);
     }
 
     private char switchSymbol(char buf) {
