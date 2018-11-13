@@ -2,7 +2,7 @@ import java.util.*;
 
 public class DataCoder {
 
-    public static final boolean PRINT_CODES = false;
+    public static final boolean PRINT_CODES = true;
 
     //original data before being splitted, encoded and transmitted
     String dataStringToTransmit;
@@ -16,7 +16,7 @@ public class DataCoder {
     HuffmanTree huffmanTree;
 
     //tasks 2-3
-    public static final int WORD_LENGTH = 5;
+    public static final int WORD_LENGTH = 1;
     public static final boolean EQUAL_PROBABILITY = false;
 
     public void transmitTextString(String s) {

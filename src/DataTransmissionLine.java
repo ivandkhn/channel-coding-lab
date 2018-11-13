@@ -6,7 +6,7 @@ public class DataTransmissionLine {
     private String currentSymbol;
     DataDecoder decoder;
 
-    double ERROR_PROBABILITY = 0.5;
+    double ERROR_PROBABILITY = 0.1;
     Random random;
     String modifiedSymbol = "";
 
