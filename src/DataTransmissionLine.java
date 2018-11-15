@@ -6,7 +6,7 @@ public class DataTransmissionLine {
     private String currentSymbol;
     DataDecoder decoder;
 
-    double ERROR_PROBABILITY = 0.1;
+    double ERROR_PROBABILITY = 1e-3;
     Random random;
     String modifiedSymbol = "";
 
@@ -24,17 +24,20 @@ public class DataTransmissionLine {
     public void getSymbol(String s) {
         currentSymbol = s;
         modifiedSymbol = "";
-        char buf;
 
-        for (int i = 0; i < s.length(); i++) {
-            buf = s.charAt(i);
+        currentSymbol = NoiseResistantCoder.codeSymbol(currentSymbol);
+
+        char buf;
+        for (int i = 0; i < currentSymbol.length(); i++) {
+            buf = currentSymbol.charAt(i);
             if (random.nextDouble() < ERROR_PROBABILITY) {
                 buf = switchSymbol(buf);
             }
             modifiedSymbol += buf;
         }
         currentSymbol = modifiedSymbol;
-        currentSymbol = NoiseResistantCoder.codeSymbol(currentSymbol);
+
+        currentSymbol =  NoiseResistantDecoder.decode(currentSymbol);
     }
 
     private char switchSymbol(char buf) {
@@ -42,12 +45,14 @@ public class DataTransmissionLine {
     }
 
     public void transmitSymbol() {
+        totalSymbolsTransmitted += DataCoder.WORD_LENGTH;
         decoder.receiveBinarySymbol(currentSymbol);
-        countStatistics(currentSymbol);
+        if (currentSymbol != null) {
+            countStatistics(currentSymbol);
+        }
     }
 
     private void countStatistics(String s) {
-        totalSymbolsTransmitted += DataCoder.WORD_LENGTH;
         totalSymbolsLength += s.length();
         char buf;
         for (int i = 0; i < s.length(); i++) {
