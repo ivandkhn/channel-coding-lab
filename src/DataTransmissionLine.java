@@ -79,7 +79,9 @@ public class DataTransmissionLine {
     }
 
     public void finishTransmission() {
-        System.out.println("--- Transmission line Statistics ---");
+        NoiseResistantDecoder.printStatistics();
+
+        System.out.println("------ Transmission line Statistics ------");
 
         System.out.printf(
                 "Total symbols transmitted: %d%n", totalSymbolsTransmitted
@@ -97,7 +99,8 @@ public class DataTransmissionLine {
                         totalSymbolsTransmitted)
                         .setScale(2, BigDecimal.ROUND_HALF_UP));
 
-        System.out.println("------------------------------------");
+        System.out.println("------------------------------------------");
+        System.out.println();
         decoder.decode();
     }
 }

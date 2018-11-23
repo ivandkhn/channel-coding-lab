@@ -4,6 +4,7 @@ public class NoiseResistantDecoder {
     public static int unknownSymbolsAmount = 0;
     public static int mistakenSymbolsAmount = 0;
     public static int correctSymbolsAmount = 0;
+    public static int fixedSymbolAmount = 0;
 
     public static final boolean SHOW_STAT = true;
 
@@ -39,13 +40,18 @@ public class NoiseResistantDecoder {
             correctSymbolsAmount++;
             return answer;
         } else {
-            // todo reduce original text alphabet so that some symbols would be interpreted as "unknown" and handle it
             mistakenSymbolsAmount++;
             int rowNumber = findRow(s);
             if (rowNumber >= answer.length) {
+                // that means that the symbol being switched didn't belong
+                // to the word, but to the correction part of the word, e.g:
+                //  1 1 1 1 0 0 0
+                //         |
+                //    word | correction part
+                // so we can't handle it properly/
                 unknownSymbolsAmount++;
                 if (SHOW_STAT) {
-                    System.out.println("unknown: " + Arrays.toString(answer));
+                    System.out.println("can not fix: " + Arrays.toString(answer) + " --> [?]");
                 }
                 return null;
             }
@@ -53,6 +59,7 @@ public class NoiseResistantDecoder {
                 System.out.print("fixed error: " + Arrays.toString(answer));
                 answer[rowNumber] = answer[rowNumber] == 0 ? 1 : 0;
                 System.out.println(" --> " + Arrays.toString(answer));
+                fixedSymbolAmount++;
             }
             return answer;
         }
@@ -74,5 +81,14 @@ public class NoiseResistantDecoder {
             }
         }
         return true;
+    }
+
+    public static void printStatistics() {
+        System.out.println();
+        System.out.println("--- Noise resistant decoder Statistics ---");
+        System.out.println("    total fixed: " + fixedSymbolAmount);
+        System.out.println("total fix fails: " + unknownSymbolsAmount);
+        System.out.println("------------------------------------------");
+        System.out.println();
     }
 }
